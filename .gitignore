@@ -1,0 +1,61 @@
+# Ignore CMake build directory
+/build/
+build/
+
+# Ignore Visual Studio files
+*.vcxproj*
+*.sln
+*.vcxproj.user
+*.suo
+*.user
+*.obj
+*.pdb
+*.idb
+*.ipch
+*.aps
+*.ncb
+*.log
+*.tlog
+*.lastbuildstate
+
+# Ignore all CEF binaries
+/external/cef_binary_*
+
+# Ignore release/debug binaries and temp files
+*.exe
+*.dll
+*.lib
+*.exp
+*.iobj
+*.ipdb
+
+# CEF output folders
+/resources/
+Release/
+Debug/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Ignore crash dumps
+*.dmp
+*.mdmp
+
+# Backup files
+*.bak
+*.tmp
+
+# Ignore CMake cache files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Ignore Python or Shell scripts cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log

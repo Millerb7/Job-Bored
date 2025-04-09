@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>JobBored Home</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    .navbar {
+      background-color: #2e2e2e;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 15px;
+    }
+
+    .tab {
+      color: white;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background-color: #444;
+      transition: background 0.3s;
+    }
+
+    .tab:hover {
+      background-color: #666;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 5px;
+    }
+
+    input[type="text"] {
+      padding: 5px;
+      font-size: 14px;
+      width: 300px;
+    }
+
+    button {
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="tabs">
+      <a class="tab" href="https://www.google.com" target="_blank">Tab 1</a>
+      <a class="tab" href="https://www.wikipedia.org" target="_blank">Tab 2</a>
+    </div>
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="Search Google..." />
+      <button onclick="searchGoogle()">Search</button>
+    </div>
+  </div>
+
+  <script>
+    function searchGoogle() {
+      const query = document.getElementById("searchInput").value;
+      if (query.trim() !== "") {
+        window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(query);
+      }
+    }
+  </script>
+
+</body>
+</html>
