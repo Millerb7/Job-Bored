@@ -15,8 +15,12 @@ link_directories(${CEF_ROOT}/Release)
 # Link directory where libcef_dll_wrapper.lib is built
 link_directories(${CEF_ROOT}/build_wrapper/libcef_dll_wrapper)
 
-# Source files
-file(GLOB SRC_FILES src/*.cpp)
+# Source files (manual)
+set(SRC_FILES
+    src/main.cpp
+    src/simple_app.cpp
+    src/simple_handler.cpp
+)
 
 # Build target
 add_executable(JobBored ${SRC_FILES})
@@ -55,4 +59,3 @@ add_custom_command(TARGET JobBored POST_BUILD
         "${CEF_ROOT}/Release"
         "$<TARGET_FILE_DIR:JobBored>"
 )
-

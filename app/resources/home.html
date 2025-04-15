@@ -7,11 +7,37 @@
     body {
       margin: 0;
       font-family: sans-serif;
+      color: white;
+      background: #1e1e1e;
+    }
+
+    #titlebar {
+      height: 30px;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      -webkit-app-region: drag;
+      user-select: none;
+    }
+
+    #titlebar .buttons {
+      display: flex;
+      gap: 10px;
+      -webkit-app-region: no-drag;
+    }
+
+    #titlebar button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
     }
 
     .navbar {
       background-color: #2e2e2e;
-      color: white;
       padding: 10px 20px;
       display: flex;
       align-items: center;
@@ -56,6 +82,14 @@
 </head>
 <body>
 
+  <div id="titlebar">
+    <div>JobBored</div>
+    <div class="buttons">
+      <button onclick="window.cefAPI?.send('minimize')">—</button>
+      <button onclick="window.cefAPI?.send('close')">×</button>
+    </div>
+  </div>
+
   <div class="navbar">
     <div class="tabs">
       <a class="tab" href="https://www.google.com" target="_blank">Tab 1</a>
@@ -71,9 +105,14 @@
     function searchGoogle() {
       const query = document.getElementById("searchInput").value;
       if (query.trim() !== "") {
-        window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(query);
+        window.open("https://www.google.com/search?q=" + encodeURIComponent(query));
       }
     }
+
+    // Optional: fallback if JS bridge isn't hooked yet
+    window.cefAPI = window.cefAPI || {
+      send: msg => console.log("cefAPI.send:", msg)
+    };
   </script>
 
 </body>

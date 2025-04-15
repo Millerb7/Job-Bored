@@ -1,12 +1,10 @@
 #include "include/cef_app.h"
-#include "include/cef_browser.h"
-#include "include/cef_client.h"
-#include "simple_handler.h"
-#include <iostream>
+#include "simple_app.h"
+#include <windows.h>
 
 int main(int argc, char* argv[]) {
-    std::cout << "Starting CEF..." << std::endl;
-    CefMainArgs main_args(GetModuleHandle(nullptr));
+    HINSTANCE hInstance = GetModuleHandle(nullptr);
+    CefMainArgs main_args(hInstance);
     CefRefPtr<SimpleApp> app(new SimpleApp());
 
     int exit_code = CefExecuteProcess(main_args, app, nullptr);
@@ -15,13 +13,12 @@ int main(int argc, char* argv[]) {
 
     CefSettings settings;
     settings.no_sandbox = true;
+    settings.windowless_rendering_enabled = false;
 
-    std::cout << "Initializing CEF..." << std::endl;
-    CefInitialize(main_args, settings, app, nullptr);
+    if (!CefInitialize(main_args, settings, app, nullptr))
+        return 1;
 
-    std::cout << "Running message loop..." << std::endl;
     CefRunMessageLoop();
-
     CefShutdown();
     return 0;
 }
