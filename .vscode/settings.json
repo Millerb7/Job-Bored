@@ -1,0 +1,6 @@
+{
+    "cmake.sourceDirectory": "C:/Users/wnd/Documents/github/Job-Bored/app",
+    "cmake.configureSettings": {
+        "CMAKE_TOOLCHAIN_FILE": "C:/Users/wnd/Documents/github/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      }
+}

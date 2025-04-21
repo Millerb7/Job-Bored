@@ -1,10 +1,10 @@
 
 #pragma once
 
-#include "cef_client.h"
-#include "cef_life_span_handler.h"
-#include "cef_display_handler.h"
-#include "wrapper/cef_message_router.h"
+#include "include/cef_client.h"
+#include "include/cef_life_span_handler.h"
+#include "include/cef_display_handler.h"
+#include "include/wrapper/cef_message_router.h"
 
 class SimpleHandler : public CefClient,
                       public CefLifeSpanHandler,

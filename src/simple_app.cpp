@@ -1,7 +1,7 @@
 #include "simple_app.h"
 #include "simple_handler.h" // So we can use SimpleHandler
-#include "cef_app.h"
-#include "wrapper/cef_helpers.h"  // this one defines CEF_REQUIRE_UI_THREAD
+#include "include/cef_app.h"
+#include "include/wrapper/cef_helpers.h"  // this one defines CEF_REQUIRE_UI_THREAD
 
 SimpleApp::SimpleApp() {}
 
