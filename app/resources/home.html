@@ -110,27 +110,6 @@
     </style>
   </head>
   <body>
-    <div id="titlebar">
-      <div>JobBored</div>
-      <div class="buttons">
-        <button onclick="window.cefAPI?.send('minimize')">—</button>
-        <button onclick="window.cefAPI?.send('close')">×</button>
-      </div>
-    </div>
-
-    <div class="navbar">
-      <div class="tabs" id="tabBar">
-        <!-- Tabs will be dynamically injected here -->
-      </div>
     
-      <div class="search-box">
-        <input id="urlInput" type="text" placeholder="Enter URL..." onkeydown="handleKey(event)" />
-        <button onclick="handleGo()">Go</button>
-      </div>
-      <button onclick="addBookmark()">☆</button>
-      <div id="bookmarks"></div>
-    </div>
-
-    <script src="main.js"></script>
   </body>
 </html>

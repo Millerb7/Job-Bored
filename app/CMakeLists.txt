@@ -12,39 +12,39 @@ add_compile_definitions(
     $<$<CONFIG:Debug>:_HAS_ITERATOR_DEBUGGING=0>
 )
 
-# Qt
+# Qt configuration
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-# Use vcpkg toolchain
+# Toolchain and paths
 set(CMAKE_TOOLCHAIN_FILE "C:/Users/wnd/Documents/github/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
 set(CMAKE_PREFIX_PATH "C:/Users/wnd/Documents/github/vcpkg/installed/x64-windows/share" CACHE STRING "")
+set(QT_DLL_PATH "C:/Users/wnd/Documents/github/vcpkg/installed/x64-windows/bin" CACHE STRING "")
+set(CEF_ROOT "${CMAKE_SOURCE_DIR}/../external/cef_binary_135.0.17+gcbc1c5b+chromium-135.0.7049.52_windows64")
+set(QT_PLUGIN_PATH "${QT_DLL_PATH}/../Qt6/plugins")
 
+# Qt packages
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
-# CEF setup
-set(CEF_ROOT "${CMAKE_SOURCE_DIR}/../external/cef_binary_135.0.17+gcbc1c5b+chromium-135.0.7049.52_windows64")
+# Include CEF headers
 include_directories(${CEF_ROOT} ${CEF_ROOT}/include)
-set(_VCPKG_INSTALLED_DIR "C:/Users/wnd/Documents/github/vcpkg/installed")
 
-# Source files
+# Source and header files
 set(SOURCES
     src/main.cpp
     src/MainWindow.cpp
-    src/simple_app.cpp
     src/simple_handler.cpp
 )
 
 set(HEADERS
     src/MainWindow.h
-    src/simple_app.h
     src/simple_handler.h
 )
 
-# Executable
+# Create executable
 add_executable(JobBored ${SOURCES} ${HEADERS})
-# Match CEF's build settings
+
 target_compile_definitions(JobBored PRIVATE CEF_USE_SANDBOX=0 NOMINMAX WIN32_LEAN_AND_MEAN)
 
 # Link directories
@@ -63,25 +63,42 @@ target_link_libraries(JobBored
     libcef_dll_wrapper
 )
 
-# Post-build: copy CEF resources
+# Post-build: copy all required runtime DLLs
 add_custom_command(TARGET JobBored POST_BUILD
-    # Ensure output directories exist
-    COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:JobBored>/locales"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CEF_ROOT}/Release/libcef.dll"
+        "${CEF_ROOT}/Resources/icudtl.dat"
+        ${QT_DLL_PATH}/Qt6Core.dll
+        ${QT_DLL_PATH}/Qt6Widgets.dll
+        ${QT_DLL_PATH}/Qt6Gui.dll
+        ${QT_DLL_PATH}/icuin74.dll
+        ${QT_DLL_PATH}/icuuc74.dll
+        ${QT_DLL_PATH}/icudt74.dll
+        ${QT_DLL_PATH}/zlib1.dll
+        ${QT_DLL_PATH}/zstd.dll
+        ${QT_DLL_PATH}/libpng16.dll
+        ${QT_DLL_PATH}/harfbuzz.dll
+        ${QT_DLL_PATH}/pcre2-16.dll
+        ${QT_DLL_PATH}/freetype.dll
+        ${QT_DLL_PATH}/brotlidec.dll
+        ${QT_DLL_PATH}/brotlicommon.dll
+        ${QT_DLL_PATH}/bz2.dll
+        $<TARGET_FILE_DIR:JobBored>
 
-    # Copy CEF resources
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CEF_ROOT}/Resources/icudtl.dat" "$<TARGET_FILE_DIR:JobBored>"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CEF_ROOT}/Resources/locales" "$<TARGET_FILE_DIR:JobBored>/locales"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CEF_ROOT}/Resources/locales"
+        "$<TARGET_FILE_DIR:JobBored>/locales"
 
-    # Copy DLLs needed to run
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CEF_ROOT}/Release/libcef.dll" "$<TARGET_FILE_DIR:JobBored>"
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CEF_ROOT}/Release/chrome_elf.dll" "$<TARGET_FILE_DIR:JobBored>"
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CEF_ROOT}/Release/d3dcompiler_47.dll" "$<TARGET_FILE_DIR:JobBored>"
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CEF_ROOT}/Release/libEGL.dll" "$<TARGET_FILE_DIR:JobBored>"
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CEF_ROOT}/Release/libGLESv2.dll" "$<TARGET_FILE_DIR:JobBored>"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${QT_PLUGIN_PATH}/platforms"
+        "$<TARGET_FILE_DIR:JobBored>/platforms"
 
-    # Copy Qt runtime DLLs (just in case)
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "C:/Users/wnd/Documents/github/vcpkg/installed/x64-windows/bin/Qt6Core.dll" "$<TARGET_FILE_DIR:JobBored>"
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "C:/Users/wnd/Documents/github/vcpkg/installed/x64-windows/bin/Qt6Gui.dll" "$<TARGET_FILE_DIR:JobBored>"
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "C:/Users/wnd/Documents/github/vcpkg/installed/x64-windows/bin/Qt6Widgets.dll" "$<TARGET_FILE_DIR:JobBored>"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CEF_ROOT}/Resources/chrome_100_percent.pak"
+        "${CEF_ROOT}/Resources/resources.pak"
+        "${CEF_ROOT}/Release/v8_context_snapshot.bin"
+        $<TARGET_FILE_DIR:JobBored>
+    
+        
 )
 

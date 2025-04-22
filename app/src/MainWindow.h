@@ -2,6 +2,9 @@
 #include <QMainWindow>
 #include <QLineEdit>
 #include <QTabWidget>
+#include "simple_handler.h"     // For SimpleHandler
+#include "include/cef_base.h"   // For CefRefPtr
+#include <QList>                // For QList
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -16,4 +19,7 @@ private slots:
 private:
     QLineEdit *urlBar;
     QTabWidget *tabWidget;
+
+    QList<CefRefPtr<SimpleHandler>> cefClients;
+
 };

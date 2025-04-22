@@ -2,6 +2,8 @@
 #include <windows.h>
 #include <unordered_map>
 #include "wrapper/cef_helpers.h"
+#include <iostream>
+using namespace std;
 
 std::unordered_map<int, HWND> tab_windows;
 
@@ -9,17 +11,21 @@ SimpleHandler::SimpleHandler() {}
 
 void SimpleHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
     CEF_REQUIRE_UI_THREAD();
+    OutputDebugStringA("CEF browser created\n");
     browser_ = browser;
+    std::cout << "[SimpleHandler] OnAfterCreated called!" << std::endl;
 
     CefMessageRouterConfig config;
     message_router_ = CefMessageRouterBrowserSide::Create(config);
     message_router_->AddHandler(this, false);
 
     HWND hwnd = browser->GetHost()->GetWindowHandle();
-    SetWindowTextW(hwnd, L"JobBored");
+    SetWindowTextW(hwnd, L"CEF Embedded");
 
     int tabId = browser->GetIdentifier();
     tab_windows[tabId] = hwnd;
+
+    std::cout << "[CEF] Browser created with ID: " << browser->GetIdentifier() << std::endl;
 }
 
 bool SimpleHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser,
