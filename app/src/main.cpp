@@ -12,6 +12,8 @@ int main(int argc, char *argv[]) {
 
     CefSettings settings;
     settings.multi_threaded_message_loop = true;
+    settings.log_severity = LOGSEVERITY_VERBOSE;
+    CefString(&settings.log_file) = "debug.log";
     CefInitialize(main_args, settings, app, nullptr);
 
     QApplication qtApp(argc, argv);

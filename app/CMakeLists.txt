@@ -35,11 +35,13 @@ set(SOURCES
     src/main.cpp
     src/MainWindow.cpp
     src/simple_handler.cpp
+    src/SimpleApp.cpp
 )
 
 set(HEADERS
     src/MainWindow.h
     src/simple_handler.h
+    src/SimpleApp.h
 )
 
 # Create executable

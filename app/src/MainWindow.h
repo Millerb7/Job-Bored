@@ -1,25 +1,32 @@
 #pragma once
+
 #include <QMainWindow>
-#include <QLineEdit>
 #include <QTabWidget>
-#include "simple_handler.h"     // For SimpleHandler
-#include "include/cef_base.h"   // For CefRefPtr
-#include <QList>                // For QList
+#include <QLineEdit>
+#include <QWidget>
+#include <QPoint>
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    void createCEFTab(const QString &url);
+    explicit MainWindow(QWidget *parent = nullptr);
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 private slots:
     void handleUrlEntered();
 
 private:
-    QLineEdit *urlBar;
+    void createCEFBrowser(const QString &url);
+
     QTabWidget *tabWidget;
+    QLineEdit *urlBar;
+    QWidget *cefContainer;
 
-    QList<CefRefPtr<SimpleHandler>> cefClients;
-
+    bool isDragging;
+    QPoint dragPosition;
 };
