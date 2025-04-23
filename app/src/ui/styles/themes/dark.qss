@@ -1,1 +1,38 @@
-/* themes/dark.qss */
+
+QWidget {
+    background-color: #1F1B24;
+    color: #EAEAEA;
+}
+
+QLineEdit {
+    background-color: #2D2533;
+    border: 1px solid #3C3442;
+    color: #EAEAEA;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+QPushButton {
+    background-color: #D5C6F0;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+QPushButton:hover {
+    background-color: #3C3442;
+    color: #EAEAEA;
+}
+
+QMenu {
+    background-color: #2D2533;
+    color: #EAEAEA;
+    border: 1px solid #3C3442;
+    padding: 4px;
+    border-radius: 6px;
+}
+
+QMenu::item:selected {
+    background-color: #3C3442;
+}
