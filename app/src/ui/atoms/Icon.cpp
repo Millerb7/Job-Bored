@@ -1,4 +1,4 @@
-#include "SearchIcon.h"
+#include "Icon.h"
 #include <QPixmap>
 
 SearchIcon::SearchIcon(QWidget *parent)

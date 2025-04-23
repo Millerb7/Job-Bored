@@ -1,5 +1,5 @@
 #include "UrlBar.h"
-#include "../atoms/SearchIcon.h"
+#include "../atoms/Icon.h"
 #include <QHBoxLayout>
 
 UrlBar::UrlBar(QWidget *parent)

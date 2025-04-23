@@ -29,20 +29,17 @@ include_directories(${CEF_ROOT} ${CEF_ROOT}/include)
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
 # Resources
-qt_add_resources(RESOURCES resources/resources.qrc)
+qt_add_resources(RESOURCES src/resources/resources.qrc)
 
 # Source files (refactored layout)
 set(SOURCES
     src/main.cpp
-    src/core/JobManager.cpp
-    src/core/BrowserCore.cpp
 
     src/ui/templates/MainWindow.cpp
-    src/ui/pages/BrowserPage.cpp
 
     src/ui/atoms/IconButton.cpp
     src/ui/atoms/NavIcon.cpp
-    src/ui/atoms/SearchIcon.cpp
+    src/ui/atoms/Icon.cpp
 
     src/ui/molecules/ControlButtons.cpp
     src/ui/molecules/UrlBar.cpp
@@ -55,15 +52,11 @@ set(SOURCES
 )
 
 set(HEADERS
-    src/core/JobManager.h
-    src/core/BrowserCore.h
-
     src/ui/templates/MainWindow.h
-    src/ui/pages/BrowserPage.h
 
     src/ui/atoms/IconButton.h
     src/ui/atoms/NavIcon.h
-    src/ui/atoms/SearchIcon.h
+    src/ui/atoms/Icon.h
 
     src/ui/molecules/ControlButtons.h
     src/ui/molecules/UrlBar.h
