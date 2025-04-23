@@ -2,5 +2,6 @@
 <RCC>
     <qresource prefix="/">
         <file>icons/searchy.png</file>
+        <file>icons/searchy.ico</file>
     </qresource>
 </RCC>

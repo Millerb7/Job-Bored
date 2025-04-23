@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
     CefInitialize(main_args, settings, app, nullptr);
 
     QApplication qtApp(argc, argv);
+    
     MainWindow window;
     window.show();
 

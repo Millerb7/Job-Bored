@@ -74,6 +74,12 @@ set(HEADERS
 
 add_executable(JobBored ${SOURCES} ${HEADERS} ${RESOURCES})
 
+# icon
+if (WIN32)
+    set(APP_ICON_RESOURCE "${CMAKE_SOURCE_DIR}/src/resources/app_icon.rc")
+    target_sources(JobBored PRIVATE ${APP_ICON_RESOURCE})
+endif()
+
 target_compile_definitions(JobBored PRIVATE CEF_USE_SANDBOX=0 NOMINMAX WIN32_LEAN_AND_MEAN)
 
 target_link_directories(JobBored
