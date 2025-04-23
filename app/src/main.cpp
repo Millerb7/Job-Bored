@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "ui/MainWindow.h"
+#include "ui/templates/MainWindow.h"
 #include "handlers/SimpleApp.h"
 #include "cef_app.h"
 

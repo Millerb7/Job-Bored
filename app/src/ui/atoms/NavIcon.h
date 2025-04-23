@@ -1,9 +1,8 @@
 #pragma once
+#include <QPushButton>
 
-#include <QWidget>
-
-class NavIcon : public QWidget {
+class NavIcon : public QPushButton {
     Q_OBJECT
 public:
-    explicit NavIcon(QWidget *parent = nullptr);
+    explicit NavIcon(const QString &label, QWidget *parent = nullptr);
 };
