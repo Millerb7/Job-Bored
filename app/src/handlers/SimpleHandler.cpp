@@ -1,4 +1,4 @@
-#include "simple_handler.h"
+#include "SimpleHandler.h"
 #include <windows.h>
 #include <unordered_map>
 #include "wrapper/cef_helpers.h"

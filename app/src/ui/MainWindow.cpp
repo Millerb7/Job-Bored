@@ -9,7 +9,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QFrame>
-#include "simple_handler.h"
+#include "../handlers/SimpleHandler.h"
 #include "cef_browser.h"
 #include "cef_app.h"
 #include "cef_client.h"

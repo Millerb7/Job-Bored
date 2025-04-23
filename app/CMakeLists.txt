@@ -4,9 +4,7 @@ project(JobBored)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Match MSVC runtime and iterator level to CEF prebuilt binaries
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-
 add_compile_definitions(
     $<$<CONFIG:Debug>:_ITERATOR_DEBUG_LEVEL=0>
     $<$<CONFIG:Debug>:_HAS_ITERATOR_DEBUGGING=0>
@@ -17,48 +15,56 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-# Toolchain and paths
+# Toolchain and Qt paths
 set(CMAKE_TOOLCHAIN_FILE "C:/Users/wnd/Documents/github/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
 set(CMAKE_PREFIX_PATH "C:/Users/wnd/Documents/github/vcpkg/installed/x64-windows/share" CACHE STRING "")
 set(QT_DLL_PATH "C:/Users/wnd/Documents/github/vcpkg/installed/x64-windows/bin" CACHE STRING "")
-set(CEF_ROOT "${CMAKE_SOURCE_DIR}/../external/cef_binary_135.0.17+gcbc1c5b+chromium-135.0.7049.52_windows64")
 set(QT_PLUGIN_PATH "${QT_DLL_PATH}/../Qt6/plugins")
+
+# CEF
+set(CEF_ROOT "${CMAKE_SOURCE_DIR}/../external/cef_binary_135.0.17+gcbc1c5b+chromium-135.0.7049.52_windows64")
+include_directories(${CEF_ROOT} ${CEF_ROOT}/include)
 
 # Qt packages
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
-# Include CEF headers
-include_directories(${CEF_ROOT} ${CEF_ROOT}/include)
+# Resources
+qt_add_resources(RESOURCES resources/resources.qrc)
 
-# Source and header files
+# Source files (refactored layout)
 set(SOURCES
     src/main.cpp
-    src/MainWindow.cpp
-    src/simple_handler.cpp
-    src/SimpleApp.cpp
+    src/core/JobManager.cpp
+    src/core/BrowserCore.cpp
+    src/ui/MainWindow.cpp
+    src/ui/Sidebar.cpp
+    src/ui/BottomBar.cpp
+    src/ui/TabManager.cpp
+    src/handlers/SimpleApp.cpp
+    src/handlers/SimpleHandler.cpp
 )
 
 set(HEADERS
-    src/MainWindow.h
-    src/simple_handler.h
-    src/SimpleApp.h
+    src/core/JobManager.h
+    src/core/BrowserCore.h
+    src/ui/MainWindow.h
+    src/ui/Sidebar.h
+    src/ui/BottomBar.h
+    src/ui/TabManager.h
+    src/handlers/SimpleApp.h
+    src/handlers/SimpleHandler.h
 )
 
-qt_add_resources(RESOURCES src/resources.qrc)
-
-# Create executable
 add_executable(JobBored ${SOURCES} ${HEADERS} ${RESOURCES})
 
 target_compile_definitions(JobBored PRIVATE CEF_USE_SANDBOX=0 NOMINMAX WIN32_LEAN_AND_MEAN)
 
-# Link directories
 target_link_directories(JobBored
     PRIVATE
         "${CEF_ROOT}/$<CONFIG>"
         "${CEF_ROOT}/build_release/libcef_dll_wrapper"
 )
 
-# Link libraries
 target_link_libraries(JobBored
     Qt6::Core
     Qt6::Gui
@@ -67,7 +73,7 @@ target_link_libraries(JobBored
     libcef_dll_wrapper
 )
 
-# Post-build: copy all required runtime DLLs
+# Post-build steps
 add_custom_command(TARGET JobBored POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CEF_ROOT}/Release/libcef.dll"
@@ -102,7 +108,4 @@ add_custom_command(TARGET JobBored POST_BUILD
         "${CEF_ROOT}/Resources/resources.pak"
         "${CEF_ROOT}/Release/v8_context_snapshot.bin"
         $<TARGET_FILE_DIR:JobBored>
-    
-        
 )
-

@@ -1,6 +1,6 @@
 #include <QApplication>
-#include "MainWindow.h"
-#include "SimpleApp.h"
+#include "ui/MainWindow.h"
+#include "handlers/SimpleApp.h"
 #include "cef_app.h"
 
 int main(int argc, char *argv[]) {
