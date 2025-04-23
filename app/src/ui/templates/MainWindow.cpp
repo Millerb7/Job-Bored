@@ -1,16 +1,11 @@
-#include "MainWindow.h"
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QSplitter>
-#include <QTabWidget>
-#include <QLineEdit>
-#include <QWidget>
-#include <QPushButton>
-#include <QLabel>
+#include "MainWindow.h"                
 #include <QMouseEvent>
-#include <QFrame>
-#include "../handlers/SimpleHandler.h"
-#include "cef_browser.h"
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include "handlers/SimpleHandler.h"     
+#include "../organisms/Sidebar.h"
+#include "../organisms/BottomBar.h"
+#include "cef_browser.h"                 
 #include "cef_app.h"
 #include "cef_client.h"
 

@@ -1,7 +1,9 @@
 #include "Sidebar.h"
 #include "../molecules/ControlButtons.h"
 #include "../atoms/NavIcon.h"
+
 #include <QVBoxLayout>
+#include <QMainWindow>
 
 Sidebar::Sidebar(QWidget *parent)
     : QWidget(parent) {
@@ -12,16 +14,15 @@ Sidebar::Sidebar(QWidget *parent)
     layout->setSpacing(10);
 
     auto *controls = new ControlButtons;
-    connect(controls, &ControlButtons::minimizeClicked, parent, [parent]() {
-        static_cast<QMainWindow*>(parent)->showMinimized();
-    });
-    connect(controls, &ControlButtons::closeClicked, parent, [parent]() {
-        static_cast<QMainWindow*>(parent)->close();
-    });
-    connect(controls, &ControlButtons::toggleFullscreenClicked, parent, [parent]() {
-        auto *win = static_cast<QMainWindow*>(parent);
-        win->isFullScreen() ? win->showNormal() : win->showFullScreen();
-    });
+
+    // Safer parent cast and connection
+    if (auto *win = qobject_cast<QMainWindow *>(parent)) {
+        connect(controls, &ControlButtons::minimizeClicked, win, &QMainWindow::showMinimized);
+        connect(controls, &ControlButtons::closeClicked, win, &QMainWindow::close);
+        connect(controls, &ControlButtons::toggleFullscreenClicked, win, [win]() {
+            win->isFullScreen() ? win->showNormal() : win->showFullScreen();
+        });
+    }
 
     layout->addWidget(controls);
 

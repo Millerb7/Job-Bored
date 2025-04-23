@@ -32,6 +32,10 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 qt_add_resources(RESOURCES src/resources/resources.qrc)
 
 # Source files (refactored layout)
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src
+)
+
 set(SOURCES
     src/main.cpp
 

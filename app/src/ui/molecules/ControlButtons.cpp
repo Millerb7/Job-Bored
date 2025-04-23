@@ -12,9 +12,9 @@ ControlButtons::ControlButtons(QWidget *parent)
     auto *minBtn = new IconButton("-");
     auto *maxBtn = new IconButton("□");
 
-    connect(minBtn, &QPushButton::clicked, this, &ControlButtons::minimizeClicked);
-    connect(closeBtn, &QPushButton::clicked, this, &ControlButtons::closeClicked);
-    connect(maxBtn, &QPushButton::clicked, this, &ControlButtons::toggleFullscreenClicked);
+    connect(minBtn, &QPushButton::clicked, this, [=]() { emit minimizeClicked(); });
+    connect(closeBtn, &QPushButton::clicked, this, [=]() { emit closeClicked(); });
+    connect(maxBtn, &QPushButton::clicked, this, [=]() { emit toggleFullscreenClicked(); });    
 
     layout->addWidget(closeBtn);
     layout->addWidget(minBtn);
