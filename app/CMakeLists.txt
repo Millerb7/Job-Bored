@@ -36,10 +36,20 @@ set(SOURCES
     src/main.cpp
     src/core/JobManager.cpp
     src/core/BrowserCore.cpp
-    src/ui/MainWindow.cpp
-    src/ui/Sidebar.cpp
-    src/ui/BottomBar.cpp
-    src/ui/TabManager.cpp
+
+    src/ui/templates/MainWindow.cpp
+    src/ui/pages/BrowserPage.cpp
+
+    src/ui/atoms/IconButton.cpp
+    src/ui/atoms/NavIcon.cpp
+    src/ui/atoms/SearchIcon.cpp
+
+    src/ui/molecules/ControlButtons.cpp
+    src/ui/molecules/UrlBar.cpp
+
+    src/ui/organisms/Sidebar.cpp
+    src/ui/organisms/BottomBar.cpp
+
     src/handlers/SimpleApp.cpp
     src/handlers/SimpleHandler.cpp
 )
@@ -47,10 +57,20 @@ set(SOURCES
 set(HEADERS
     src/core/JobManager.h
     src/core/BrowserCore.h
-    src/ui/MainWindow.h
-    src/ui/Sidebar.h
-    src/ui/BottomBar.h
-    src/ui/TabManager.h
+
+    src/ui/templates/MainWindow.h
+    src/ui/pages/BrowserPage.h
+
+    src/ui/atoms/IconButton.h
+    src/ui/atoms/NavIcon.h
+    src/ui/atoms/SearchIcon.h
+
+    src/ui/molecules/ControlButtons.h
+    src/ui/molecules/UrlBar.h
+
+    src/ui/organisms/Sidebar.h
+    src/ui/organisms/BottomBar.h
+
     src/handlers/SimpleApp.h
     src/handlers/SimpleHandler.h
 )
