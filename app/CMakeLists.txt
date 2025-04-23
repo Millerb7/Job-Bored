@@ -44,8 +44,10 @@ set(HEADERS
     src/SimpleApp.h
 )
 
+qt_add_resources(RESOURCES src/resources.qrc)
+
 # Create executable
-add_executable(JobBored ${SOURCES} ${HEADERS})
+add_executable(JobBored ${SOURCES} ${HEADERS} ${RESOURCES})
 
 target_compile_definitions(JobBored PRIVATE CEF_USE_SANDBOX=0 NOMINMAX WIN32_LEAN_AND_MEAN)
 

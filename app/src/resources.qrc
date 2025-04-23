@@ -1,0 +1,6 @@
+<!DOCTYPE RCC>
+<RCC>
+    <qresource prefix="/">
+        <file>icons/searchy.png</file>
+    </qresource>
+</RCC>
