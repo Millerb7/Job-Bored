@@ -5,15 +5,14 @@
 #include "cef_life_span_handler.h"
 #include "cef_display_handler.h"
 #include "wrapper/cef_message_router.h"
+#include <functional>
 
 class SimpleHandler : public CefClient,
                       public CefLifeSpanHandler,
                       public CefDisplayHandler,
                       public CefMessageRouterBrowserSide::Handler {
 public:
-    SimpleHandler();
-
-    // Add this
+    SimpleHandler(std::function<void(CefRefPtr<CefBrowser>)> onBrowserCreated = nullptr);
     void OnAfterCreated(CefRefPtr<CefBrowser> browser) override;
     bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser,
                                    CefRefPtr<CefFrame> frame,
@@ -28,6 +27,6 @@ public:
 private:
     CefRefPtr<CefBrowser> browser_;
     CefRefPtr<CefMessageRouterBrowserSide> message_router_;
-
+    std::function<void(CefRefPtr<CefBrowser>)> onBrowserCreated_;
     IMPLEMENT_REFCOUNTING(SimpleHandler);
 };

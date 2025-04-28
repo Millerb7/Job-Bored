@@ -8,5 +8,7 @@ public:
     explicit BottomBar(QWidget *parent = nullptr);
 signals:
     void urlEntered(const QString &url);
+    void settingsClicked();
+    void themeToggleRequested();
 
 };

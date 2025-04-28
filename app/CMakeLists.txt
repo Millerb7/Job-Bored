@@ -50,6 +50,7 @@ set(SOURCES
 
     src/ui/organisms/Sidebar.cpp
     src/ui/organisms/BottomBar.cpp
+    src/ui/organisms/dialogs/SettingsDialog.cpp
 
     src/handlers/SimpleApp.cpp
     src/handlers/SimpleHandler.cpp
@@ -67,6 +68,7 @@ set(HEADERS
 
     src/ui/organisms/Sidebar.h
     src/ui/organisms/BottomBar.h
+    src/ui/organisms/dialogs/SettingsDialog.h
 
     src/handlers/SimpleApp.h
     src/handlers/SimpleHandler.h
