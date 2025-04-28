@@ -7,6 +7,9 @@
 #include <QHBoxLayout>
 #include <QApplication>
 #include <QSettings>
+#include <QPainterPath>
+#include <QRegion> 
+#include <QEvent>    
 #include <QDebug>
 #include "handlers/SimpleHandler.h"
 #include "../organisms/Sidebar.h"
@@ -15,6 +18,15 @@
 #include "cef_browser.h"
 #include "cef_app.h"
 #include "cef_client.h"
+#include <windows.h>
+
+#ifndef GET_X_LPARAM
+#define GET_X_LPARAM(lp) ((int)(short)LOWORD(lp))
+#endif
+
+#ifndef GET_Y_LPARAM
+#define GET_Y_LPARAM(lp) ((int)(short)HIWORD(lp))
+#endif
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent) {
@@ -30,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QWidget *central = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(central);
-    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setContentsMargins(8, 8, 8, 8);
     mainLayout->setSpacing(0);
 
     auto *sidebar = new Sidebar(this);
@@ -52,6 +64,8 @@ MainWindow::MainWindow(QWidget *parent)
     mainLayout->addWidget(bottomBar);
     central->setLayout(mainLayout);
     setCentralWidget(central);
+
+    updateWindowMask();
 
     qDebug() << "[MainWindow] UI setup complete. Attempting to create CEF browser.";
     createCEFBrowser("https://www.google.com");
@@ -104,6 +118,24 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
     isDragging = false;
 }
 
+void MainWindow::updateWindowMask()
+{
+    if (isMaximized() || isFullScreen()) {
+        setMask(QRegion()); // Full window, no rounded corners
+    } else {
+        const int radius = 12;
+        QRegion region(rect(), QRegion::Rectangle);
+
+        // Create a rounded rectangle path
+        QPainterPath path;
+        path.addRoundedRect(rect(), radius, radius);
+
+        // Set the mask based on the path
+        QRegion roundedRegion = QRegion(path.toFillPolygon().toPolygon());
+        setMask(roundedRegion);
+    }
+}
+
 void MainWindow::applyTheme(const QString &theme) {
     QFile file(":/styles/themes/" + theme + ".qss");
     if (file.open(QFile::ReadOnly | QFile::Text)) {
@@ -149,6 +181,88 @@ void MainWindow::resizeEvent(QResizeEvent* event) {
             );
 
             browser->GetHost()->WasResized();
+            updateWindowMask();
         }
     }
+}
+
+bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result)
+{
+    qDebug() << message;
+
+    if (eventType == "windows_generic_MSG") {
+        MSG* msg = static_cast<MSG*>(message);
+
+        if (msg->message == WM_NCHITTEST) {
+            const LONG borderWidth = 8; // Must match your margins
+            RECT winRect;
+            GetWindowRect(HWND(winId()), &winRect);
+
+            // Raw mouse position from message (screen coordinates)
+            const LONG x = GET_X_LPARAM(msg->lParam);
+            const LONG y = GET_Y_LPARAM(msg->lParam);
+
+            // Calculate mouse position relative to window
+            const LONG localX = x - winRect.left;
+            const LONG localY = y - winRect.top;
+            const LONG w = winRect.right - winRect.left;
+            const LONG h = winRect.bottom - winRect.top;
+
+            bool resizeWidth = minimumWidth() != maximumWidth();
+            bool resizeHeight = minimumHeight() != maximumHeight();
+
+            // Top-left corner
+            if (resizeWidth && resizeHeight && localX < borderWidth && localY < borderWidth) {
+                *result = HTTOPLEFT;
+                return true;
+            }
+            // Top-right corner
+            if (resizeWidth && resizeHeight && localX > w - borderWidth && localY < borderWidth) {
+                *result = HTTOPRIGHT;
+                return true;
+            }
+            // Bottom-left corner
+            if (resizeWidth && resizeHeight && localX < borderWidth && localY > h - borderWidth) {
+                *result = HTBOTTOMLEFT;
+                return true;
+            }
+            // Bottom-right corner
+            if (resizeWidth && resizeHeight && localX > w - borderWidth && localY > h - borderWidth) {
+                *result = HTBOTTOMRIGHT;
+                return true;
+            }
+            // Left border
+            if (resizeWidth && localX < borderWidth) {
+                *result = HTLEFT;
+                return true;
+            }
+            // Right border
+            if (resizeWidth && localX > w - borderWidth) {
+                *result = HTRIGHT;
+                return true;
+            }
+            // Top border
+            if (resizeHeight && localY < borderWidth) {
+                *result = HTTOP;
+                return true;
+            }
+            // Bottom border
+            if (resizeHeight && localY > h - borderWidth) {
+                *result = HTBOTTOM;
+                return true;
+            }
+
+            // Now handle dragging the window if you click somewhere in your fake "titlebar" area
+            // (e.g., first 40px of height can be dragged)
+            if (localY < 40) {
+                *result = HTCAPTION;
+                return true;
+            }
+
+            *result = HTCLIENT;
+            return true;
+        }
+    }
+
+    return QMainWindow::nativeEvent(eventType, message, result);
 }
